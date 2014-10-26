@@ -13,8 +13,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
   var translate = navigator.mozL10n.get;
 
-  var button = document.getElementById('send-button');
-  button.addEventListener('click', sendMessage);
+  var sendButton = document.getElementById('send-button');
+  sendButton.addEventListener('click', sendMessage);
+  var clearButton = document.getElementById('clear-button');
+  clearButton.addEventListener('click', clearMessages);
   var input_name = document.getElementById('input-name');
   var input_message = document.getElementById('input-message');
   var messages = document.getElementById('messages');
@@ -30,7 +32,8 @@ window.addEventListener('DOMContentLoaded', function() {
   function appendMessage(txt) {
     var item = document.createElement('p');
     item.textContent = txt;
-    messages.appendChild(item);
+    // messages.appendChild(item);
+    messages.insertBefore(item,messages.firstChild)
   }
 
   function receiveMessage(msg) {
@@ -45,6 +48,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     console.log(data.from, data.content);
     appendMessage('<' + data.from + '> ' + data.content);
+  }
+
+  function clearMessages() {
+    while(messages.firstChild) {
+      messages.removeChild(messages.firstChild);
+    }
   }
 
   function sendMessage() {
@@ -74,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function() {
       input_message.value = EMPTY;
     } catch(e) {
       console.error(e.message, e.stack);
-      button.disabled = true;
+      sendButton.disabled = true;
       setTimeout(setup, 1000);
       return;
     }
@@ -82,11 +91,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
   function setup() {
     if(socket) {
-      button.disabled = false;
+      sendButton.disabled = false;
       return;
     }
 
-    button.disabled = true;
+    sendButton.disabled = true;
     console.log('send disabled');
 
     try {
@@ -104,7 +113,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     socket.opened.then(function() {
       socket.addEventListener('message', receiveMessage);
-      button.disabled = false;
+      sendButton.disabled = false;
       console.log('send enabled');
     });
   }
@@ -119,12 +128,13 @@ window.addEventListener('DOMContentLoaded', function() {
   input_name.onfocus = function() {
     if(input_name.value == DEFAULT_NAME) {
       input_name.value = EMPTY;
+      input_name.className = '';
     }
   }
   input_name.onblur = function() {
     if(input_name.value == EMPTY) {
       input_name.value = DEFAULT_NAME;
-      input_name.addClass('test');
+      input_name.className = 'ghostly';
     }
   }
   input_name.onkeypress = function(k) {
@@ -136,11 +146,13 @@ window.addEventListener('DOMContentLoaded', function() {
   input_message.onfocus = function() {
     if(input_message.value == DEFAULT_MESSAGE) {
       input_message.value = EMPTY;
+      input_message.className = '';
     }
   }
   input_message.onblur = function() {
     if(input_message.value == EMPTY) {
       input_message.value = DEFAULT_MESSAGE;
+      input_message.className = 'ghostly';
     }
   }
   input_message.onkeypress = function(k) {

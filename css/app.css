@@ -15,9 +15,13 @@ input {
 }
 
 button {
-	width: 100%;
+	width: 49%;
 	height: 30pt;
 	font-size: 20pt;
+}
+
+.ghostly {
+	color: #999999;
 }
 
 h1 {
