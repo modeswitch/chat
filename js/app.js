@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
   function sendMessage() {
     console.log('send message');
-    if(input_message.value == EMPTY) return;
+    if(input_message.value == EMPTY || input_message.value == DEFAULT_MESSAGE) return;
 
     if(!socket) {
       setTimeout(setup, 1000);
@@ -124,10 +124,11 @@ window.addEventListener('DOMContentLoaded', function() {
   input_name.onblur = function() {
     if(input_name.value == EMPTY) {
       input_name.value = DEFAULT_NAME;
+      input_name.addClass('test');
     }
   }
   input_name.onkeypress = function(k) {
-    if(k.charCode === 13) {
+    if(k.keyCode === 13) {
       input_message.focus();
     }
   }
@@ -143,9 +144,9 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
   input_message.onkeypress = function(k) {
-    if(k.charCode === 13) {
+    console.log(k);
+    if(k.keyCode === 13) {
       sendMessage();
     }
   }
-
 });
