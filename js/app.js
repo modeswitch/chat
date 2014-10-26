@@ -7,6 +7,9 @@ window.addEventListener('DOMContentLoaded', function() {
   // We'll ask the browser to use strict code to help us catch errors earlier.
   // https://developer.mozilla.org/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
   'use strict';
+  var EMPTY = '';
+  var DEFAULT_NAME = "Enter Name Here";
+  var DEFAULT_MESSAGE = "Enter Message Here";
 
   var translate = navigator.mozL10n.get;
 
@@ -66,7 +69,7 @@ window.addEventListener('DOMContentLoaded', function() {
     try {
       socket.send(message, MULTICAST_ADDRESS, CHAT_PORT);
       console.log(message);
-      input_message.value = '';
+      input_message.value = EMPTY;
     } catch(e) {
       console.error(e.message, e.stack);
       button.disabled = true;
@@ -107,5 +110,42 @@ window.addEventListener('DOMContentLoaded', function() {
   // We want to wait until the localisations library has loaded all the strings.
   // So we'll tell it to let us know once it's ready.
   navigator.mozL10n.once(setup);
+
+  //UI behjavioours
+  input_name.value = DEFAULT_NAME;
+  input_message.value = DEFAULT_MESSAGE;
+  input_name.onfocus = function() {
+    if(input_name.value == DEFAULT_NAME) {
+      input_name.value = EMPTY;
+    }
+  }
+  input_name.onblur = function() {
+    if(input_name.value == EMPTY) {
+      input_name.value = DEFAULT_NAME;
+    }
+  }
+  input_name.onkeypress = function(k) {
+    if(k.charCode === 13) {
+      input_message.focus();
+    }
+  }
+
+  input_message.onfocus = function() {
+    if(input_message.value == DEFAULT_MESSAGE) {
+      input_message.value = EMPTY;
+    }
+  }
+  input_message.onblur = function() {
+    if(input_message.value == EMPTY) {
+      input_message.value = DEFAULT_MESSAGE;
+    }
+  }
+  input_message.onkeypress = function(k) {
+    if(k.charCode === 13) {
+      if(input_message == EMPTY);
+      sendMessage();
+      input_message.value = EMPTY;
+    }
+  }
 
 });
