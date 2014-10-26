@@ -49,6 +49,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
   function sendMessage() {
     console.log('send message');
+    if(input_message.value == EMPTY) return;
+
     if(!socket) {
       setTimeout(setup, 1000);
       return;
@@ -142,9 +144,7 @@ window.addEventListener('DOMContentLoaded', function() {
   }
   input_message.onkeypress = function(k) {
     if(k.charCode === 13) {
-      if(input_message == EMPTY);
       sendMessage();
-      input_message.value = EMPTY;
     }
   }
 
